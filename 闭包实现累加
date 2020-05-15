@@ -1,0 +1,18 @@
+function a(numberOne){
+    var count=numberOne;
+    return function b(numberTwo){
+        if (numberTwo==undefined){
+            return count;
+        } else {
+            count+=numberTwo;
+            return b;
+        }
+    }
+}
+console.log(a(10)(12)());
+打印的时候一定要多加一个括号。
+因为：
+当一个变量名需要用到函数内的变量或者结果的时候用return返回参数
+----> b = a()
+
+例如 有个 a() 函数 ，现在外面的 b 变量需要 a() 函数处理完的结果时候 a() 就需要用return返回出来 ，如果你用print的话，外面变量就没法用了
