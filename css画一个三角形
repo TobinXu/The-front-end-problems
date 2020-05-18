@@ -1,0 +1,11 @@
+通过边距，如上下左右边距调节三角形的宽高。
+先使用width height设置为0，这样就在一个点，然后扩展
+
+.triangle{
+position:absolute;
+width:0;
+height:0;
+border-width:0 10px 10px 10px;
+border-style:solid:
+border-color:transparent transparent white transparent;
+}
