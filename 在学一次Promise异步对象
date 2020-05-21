@@ -1,0 +1,212 @@
+promise 异步对象的学习
+const fn = new Promise(function (resolve,reject ){
+    setTimeout(() => {
+        let num = Math.ceil(Math.random() * 10) //假设num算出来是10
+        if ( num > 5 ) {
+            resolve(num)
+        } else {
+            reject(num)
+        }
+    }, 2000)
+})
+
+fn.then((res) => {
+    console.log(res)
+}, (err) => {
+    console.log(err)
+})
+这是一个最简单的Promise使用，假设2秒之后生成了随机数10，那么resolve回调函数运行
+then走第一个函数，console.log(7)
+假设2秒后随机数3，那么reject函数运行。then走第二个函数，console.log(3)
+
+
+//then中进行回调
+fn = new Promise(function (resolve, reject) {
+    let num = Math.ceil(Math.random() * 10)
+    if (num >5) {
+        resolve(num)
+    } else {
+        reject(num)
+    }
+})
+//第一次回调
+fn.then((res) => {
+    console.log(`res==>$(res)`)
+    return new Promise((resolve, reject) => {
+        if (2 * res > 15) {
+            resolve(2 * res)
+        } else {
+            reject(2*res)
+        }
+    })
+}, (err) => {
+    console.log(`err==>${err}`)
+}).then((res) => {  //第二次回调
+    console.log(res)
+}, (err) => {
+    console.log(`err==>${err}`)
+})
+
+
+在Promise的内部，有一个状态管理器，有三种状态：pending，fulfilled，rejected。 
+promise对象的初始状态为pending，
+当调用resolve（成功），会由pending=>fulfilled
+当调用reject(失败)，会由pending=>rejected
+状态一旦修改，不可改变。
+当状态为fulfilled(rejected反之)时，then的成功回调函数被调用，并接受上面传来的num
+进行相应的操作。
+
+//catch的用法
+fn.then((res) => {
+    console.log(`res==>$(res)`)
+    return new Promise((resolve, reject) => {
+        if (2 * res > 15) {
+            resolve(2 * res)
+        } else {
+            reject(2*res)
+        }
+    })
+}, (err) => {
+    console.log(`err==>${err}`)
+}).then((res) => {  //第二次回调
+    console.log(res)
+}).catch((err) => {
+    console.log(`err==>${err}`)
+})
+
+//Promise.resolve返回一个fulfilled状态的promise对象，Promise.reject返回一个rejected状态的promise对象
+Promise.resolve('hello').then(function(value) {
+    console.log(value);
+});
+
+Promise.resolve('hello');
+//相当于
+const promise = new Promise(resolve => {
+    resolve('hello');
+});
+
+//reject
+Promise.reject('hello');
+//相当于
+const promise = new Promise(reject => {
+    resolve('hello');
+});
+
+
+
+promises all方法就是 作为几个参数的对象一旦有一个状态为rejected，则all的返回值就是rejected。
+当几个反坐参数的函数的返回状态都为fulfilled时，至于最后输出的时间就看谁跑的慢。
+let p1 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('1s') //1秒后输出去
+        resolve(1)
+    }, 1000)
+})
+let p10 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('10s') //10s后输出
+        resolve(10)
+    })
+}, 10000)
+let p5 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('5s')  //5s后输出
+        resolve(5)
+    }, 5000)
+})
+
+Promise.all([p1,p10,p5]).then((res) => {
+    console.log(res);  //最后输出
+})
+
+//运行结果是，根据谁最后原则，10s后输出[1,10,5]
+
+promise.race()方法也可以处理一个promise实例数组但它和promise.all()不同，从字面意思上理解就是竞速，
+那么理解起来上就简单多了，也就是说在数组中的元素实例哪个率先改变状态，就向下传递谁的状态和异步结果。
+但是，其余的还是会继续进行的，但是不传递。
+let p1 = new Promise((resolve)=>{
+  setTimeout(()=>{
+    console.log('1s') //1s后输出
+    resolve(1)
+  },1000)
+})
+let p10 = new Promise((resolve)=>{
+  setTimeout(()=>{
+    console.log('10s') //10s后输出
+    resolve(10) //不传递
+  },10000)
+})
+let p5 = new Promise((resolve)=>{
+  setTimeout(()=>{
+    console.log('5s') //5s后输出
+    resolve(5) //不传递
+  },5000)
+})
+Promise.race([p1, p10, p5]).then((res)=>{
+    console.log(res); // 最后输出
+})
+结果
+1s
+1
+5s
+10s
+
+//使用race方法 做一些超时操作
+//请求某个图片资源
+let requestImg = new Promise(function(resolve, reject) {
+    var img = new Image();
+    img.onload = function() {
+        resolve(img);
+    }
+});
+//延时函数，用于给请求计时
+let tineOut = new Promise(function(resolve, reject) {
+    setTimeout(function() {
+        reject('图片请求超时');
+    }, 5000);
+});
+
+Promise.race([requestImg, timeout]).then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.log(err);
+});
+
+
+//讲解promise值穿透的好文章
+https://juejin.im/entry/58a10aa61b69e60059d1d2af
+
+
+//使用race方法 做一些超时操作
+//请求某个图片资源
+let requestImg = new Promise(function(resolve, reject) {
+    var img = new Image();
+    img.onload = function() {
+        resolve(img);
+    }
+});
+//延时函数，用于给请求计时
+let tineOut = new Promise(function(resolve, reject) {
+    setTimeout(function() {
+        reject('图片请求超时');
+    }, 5000);
+});
+
+Promise.race([requestImg, timeout]).then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.log(err);
+});
+
+Promise值穿透
+.then或者.catch的参数期望是函数，传入非函数会发生值穿透
+Promise.resolve(1)
+.then(2)
+.then(Promise.resolve(3))
+.then(console.log)
+输出： 1；
+
+
+
+
+
