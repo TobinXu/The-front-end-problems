@@ -216,6 +216,47 @@ Promise.resolve(1)
 输出： 1；
 
 
+async function ajaxGetData() {
+    xxx
+    dosomething()
+    await ajaxGetDataFirst()
+    dosomething()
+    await ajaxGetDataSecond()
+    dosomething()
+    xxx
+}
+ajaxGetData()
+
+我们做了一些事情，然后到一个异步的ajax请求后，等待ajaxGetDataFirst这个异步的事件执行完毕后，
+开始继续做一些事情，到了第二个ajax异步请求ajaxGetDataSecond（），开始执行阻塞住函数的执行，
+等待异步事件执行完毕后就继续做下面的事情。用await关键字的时候就是在告诉下面的代码，这块你得给我等着，
+wait我执行完了才能轮到你 understand？总之await吊极了。
+
+//await是在async函数里面使用的，作用范围是不可以继承下去的
+async function fn() {
+    (function(){
+        await 123
+    })()
+}  //会报错告诉await只能在async函数中使用，而这个await是在下一个function  作用域不可以继承
+//在promise使用async函数
+new Promise(async (resolve, reject) => {
+    await xxx
+})
+
+// async函数的返回值是一个promise对象,帮助我们把内部的异步请求的数据抛出到函数外部来。
+//在使用场景中，我们有的时候需要异步的一个结果，比如ajax请求的结果，这个时候我们希望得到这个异步的结果怎么办？
+//这个时候await可以帮助我，在执行完异步的操作的时候拿到结果，在拿到结果后顺序执行下去。直到return的时候把这个结果 return出去，
+async function fn() {
+    let result = await new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(100)
+        }, 1000)
+    }).then(res => {
+        return res
+    })
+    return result
+}
+let a =fn()
 
 
 
