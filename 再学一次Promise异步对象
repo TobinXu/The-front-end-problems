@@ -35,6 +35,9 @@ fn = new Promise(function (resolve, reject) {
 
 实例方法，为 Promise 注册回调函数，函数形式：fn(vlaue){}，value 是上一个任务的返回结果，
 then 中的函数一定要 return 一个结果或者一个新的 Promise 对象，才可以让之后的then 回调接收。
+请一定要谨记：如果我们的后续任务是异步任务的话，必须return 一个 新的 promise 对象。
+如果后续任务是同步任务，只需 return 一个结果即可。
+我们上面举的例子，除了电话通知我是一个同步任务，其余的都是异步任务，异步任务 return 的是 promise对象。
 
 fn.then((res) => {
     console.log(`res==>$(res)`)
