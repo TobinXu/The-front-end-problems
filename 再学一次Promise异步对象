@@ -30,6 +30,12 @@ fn = new Promise(function (resolve, reject) {
     }
 })
 //第一次回调
+//Promise.prototype.then
+
+
+实例方法，为 Promise 注册回调函数，函数形式：fn(vlaue){}，value 是上一个任务的返回结果，
+then 中的函数一定要 return 一个结果或者一个新的 Promise 对象，才可以让之后的then 回调接收。
+
 fn.then((res) => {
     console.log(`res==>$(res)`)
     return new Promise((resolve, reject) => {
