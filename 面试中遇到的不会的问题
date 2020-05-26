@@ -65,3 +65,28 @@ console.log(str.split(",")); //[ 'a', 'b', 'c', 'd', 'f' ]
 console.log(str.split(" ")); // [ 'a,b,c,d,f' ]
 console.log(str.split("|")); // [ 'a,b,c,d,f' ]
 
+// let相比var 没有变量提升，有暂时性死区：没有声明不能使用。let只在代码块内有效
+
+// 匿名函数模仿块级作用域
+(function() {
+    //这里是块级作用域
+})();
+ 
+// 关于匿名函数的讲解
+var count = 5;
+outputNumbers(count);
+// 等同于
+outputNumbers(5);
+// 演化一下
+
+var someFunction = funciton() {
+    // 这里是块级作用域
+};
+//调用执行方法
+someFunction();
+//等同于
+(function() {
+    //块级作用域
+})();
+
+
