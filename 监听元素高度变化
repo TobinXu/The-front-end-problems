@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>demo</title>
+        <meta charset="utf-8">
+        <style type="text/css">
+            #demo {
+                width: 100px;
+                height: 200px;
+                background: yellow;
+                margin: 10px;
+                padding: 10px;
+                border: 2px solid blue;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="demo">hello</div>
+        <script type="text/javascript">
+            var div = document.getElementById('demo');
+            console.log(div.offsetHeight); // 224
+            console.log(div.clientHeight); // 220
+        </script>
+    </body>
+</html>
+
+可以看出
+offsetHeight = height + padding * 2 + border * 2
+clientHeight = height +padding * 2
+可以看出来offsetHeight包括元素的内容+内边距+边框，而clientHeight的值等于元素的内容+内边框。
+那我们怎么获取元素的本身高度呢？
+1.直接利用style？
+但是console.log(div.style.height) // ''
+打印出来为空，这是因为style属性只能通过元素标签style属性里面的值来获取。
+这里的div什么都没有，style也没有，当然输出为空了。
+先从获取标签高度开始
+#demo {
+    width: 100px;
+    /*height: 200px;*/
+    background: yellow;
+    margin: 10px;
+    padding: 10px;
+    border: 2px solid blue;
+}
+
+<div id="demo" style="height: 200px">hello</div>
+要是把内部样式表中的height注释掉，将高度添加到style中，
+console.log(div.style.height) // 200px
+这样就能完美的获取到高度了。
+
+显然这样每次都添加到内联样式是不理想的，那有没有更好的办法呢？
+2.getComputedStyle
+getComputedStyle()方法获取的是最终应用在元素上的所有CSS属性对象（即使没有CSS代码，也会把八辈祖宗
+给显示出来）
+这样就不用麻烦的再去添加内联样式了。
+另外，getConputedStyle是只读的，但是style是可读可写的，搭配他俩就可以动态设置元素高度。
+只需要一行代码
+window.getComputedStyle(div);
+就可以获得一大堆属性值。
+但是只想要某个属性值的话怎么办？让getPropertyValue（可以获得CSS样式申明对象的属性值）来帮忙。
+console.log(window.getComputedStyle().getProperttValue('height')); //200px
+成功获取元素高度。
+
+
+怎么获取元素属性值的变化呢
+ResizeObserver 允许我们观察DOM元素的内容矩形大小（宽度、高度）的变化，并做出相应的响应。它就像给元素添加 document.onresize() 或 window.resize() 事件（但在JavaScript中，只有 window 才有 resize 事件）。当元素改变大小而不调整视窗大小时，它是有用的。 下面描述一些调整观察者的行为：
+
+当观察到的元素被插入或从DOM中删除时，观察将会触发
+当观察到的元素 display 值为 none 时，观察都会触发
+观察不会对未替换的内联元素（non-replaced inline element）触发
+观察不会由CSS的 transform 触发
+如果元素有显示，而且元素大小不是 0,0 ，观察将会触发
+
+使用Resize Observe，只需要实例化一个新的ResizeObserve对象并传入一个回调函数，该函数接收观察到的条目
+const myObserver = new ResizeObserver(entries => {
+    // 遍历条目，做一些事情
+  });
+然后我们在实例化对象上调用observe并传入一个元素来观察
+const someEl = document.querySelector('.some-element');
+const someOtherEl = document.querySelector('.some-other-element');
+
+myObserver.observe(someEl);
+myObserver.observe(someOtherEl);
+对于每个entry，我们都会得到一个包含contentRect和一个target属性的对象。
+target是DOM元素本身，contentRect是具有以下属性的对象：width，height，
+x，y，top，right，bottom和left。
+contentRectde width和height值不包括padding。contentRect.top是元素顶部的padding
+contentRect.left是元素左侧padding
+比如要打印出被监听元素寸尺变化时width和height的值，可以像下面这样做:
+const myObserver = new ResizeObserver(entries => {
+    entries.forEach(entry => {
+      console.log('width', entry.contentRect.width);
+      console.log('height', entry.contentRect.height);
+    });
+  });
+  
+  const someEl = document.querySelector('.some-element');
+  myObserver.observe(someEl);
+  
+
