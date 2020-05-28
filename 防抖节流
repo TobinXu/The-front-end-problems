@@ -1,0 +1,24 @@
+// 防抖 在第一次出发事件时，不立刻执行，而是给出一个期限值，比如200ms
+// 然后：如果200ms内没有再次触发，不执行；再次触发，重新计时
+// 效果：如果短时间内大量触发，只执行一次
+// 实现：既然要有计时，肯定需要setTimeOut函数，还需要一个变量保存计时，考虑维护全局纯净，可以借助闭包实现
+
+// fn 需要防抖的函数 delay防抖时间期限值
+ function debounce(fn, delay) {
+     let timer = null; // 借助闭包
+     return function() {
+        if(timer) {
+            clearTimeout(timer); // 进到这个分支，说明一个计时周期内，再次触发相同时间，所以清除当前计时器，重新计时
+        } 
+         timer = setTimeout(fn, delay) // 进入该分支说明当前没有计时，那就开始计时      
+     }
+ }
+
+ // 输出滚动条的位置
+function showTop() {
+    var scrollTop = doucment.body.scrollTop || doucment.doucmentElement.scrollTop;
+    console.log('滚动条位置' + scrollTop);
+}
+
+window.onscroll = debounce(showTop(),1000);
+
