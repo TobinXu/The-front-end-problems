@@ -16,9 +16,37 @@
 
  // 输出滚动条的位置
 function showTop() {
-    var scrollTop = doucment.body.scrollTop || doucment.doucmentElement.scrollTop;
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
     console.log('滚动条位置' + scrollTop);
 }
 
-window.onscroll = debounce(showTop(),1000);
+window.onscroll = debounce(showTop,1000);
+
+// 节流 即使用户不断的拖动滚动条，也能在某个时间间隔给出反馈
+// 可以设置一个控制器，定期开放函数，也就是让函数在一次执行后，一个时间段内失效，过了这个时间段再激活
+// 效果 短时间内大量触发同一事件，在函数执行一次后，该函数在指定时间期限内不工作，过了这段时间在工作
+// 使用setTimeout 和 状态为valid（表示当前函数是否在工作状态）来实现
+
+function throttle(fn, delay) {
+    let valid = true;
+    return function() {
+        if(!valid) {
+            //休息时间，暂不接客
+            return false;
+        }
+        // 工作时间，执行函数并且在间隔期内把状态为设为无效
+        valid = false;
+        setTimeout(() => {
+            fn();
+            valid = true;
+        }, delay)
+    }
+}
+
+function showTop() { 
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop; // 滚动条与顶部的距离
+    console.log('当前您在：',scrollTop);
+}
+
+window.onscroll = throttle(showTop, 1000);
 
