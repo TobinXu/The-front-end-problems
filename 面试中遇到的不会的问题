@@ -163,3 +163,30 @@ align-items:center; //垂直居中
 （10）伪元素选择器（::before、::after）
 （11）通配符选择器（*）
 
+// div嵌套div ，点击子级div不触发父级div点击事件
+解决方法： 在子级div上增加一个事件 onClick="event.cancelBubble = true"，这样就可以只触发自身的点击事件了
+ 或者在孩子事件里面声明event.stopPropagation();//终止事件冒泡
+
+在父div的position为abosulte或是relative的情况下，子级div的position为absolute.
+此时监听到了父div的缩放，并触发了事件。
+那么js如何做到去操作子级的left和top，及width和height，随着父div的缩放而自适应呢？
+.a{
+    width: 500px;
+    height: 500px;
+    position:relative;
+    border: 1px solid red;
+  }
+  .b{
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 10%;
+    top: 10%;
+    border: 1px solid green;
+  }
+
+<div class="a">
+  <div class="b"></div>
+</div>
+
+
