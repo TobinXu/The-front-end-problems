@@ -190,3 +190,21 @@ align-items:center; //垂直居中
 </div>
 
 
+
+// 冒泡学习
+<div id="outer">
+    <p id="inner">Click me!</p>
+</div>
+事件冒泡微软提出了名为事件冒泡(event bubbling)的事件流。事件冒泡可以形象地比喻为把一颗石头投入水中，
+泡泡会一直从水底冒出水面。也就是说，事件会从最内层的元素开始发生，一直向上传播，直到document对象。
+因此上面的例子在事件冒泡的概念下发生click事件的顺序应该是p -> div -> body -> html -> document
+
+// 事件捕获
+网景提出另一种事件流名为事件捕获(event capturing)。与事件冒泡相反，事件会从最外层开始发生，直到最具体的元素。
+
+addEventListener方法用来为一个特定的元素绑定一个事件处理函数，是JavaScript中的常用方法。addEventListener有三个参数：
+element.addEventListener(event, function, useCapture) // useCapture 设置为 true - 事件句柄在捕获阶段执行（即在事件捕获阶段调用处理函数）
+//                                            false- false- 默认。事件句柄在冒泡阶段执行（即表示在事件冒泡的阶段调用事件处理函数）
+
+
+
