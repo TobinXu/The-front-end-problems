@@ -89,4 +89,15 @@ someFunction();
     //块级作用域
 })();
 
+20200601
+// symbol 作为一个对象或一个Map的键值，他可以保证你的对象或Map键值不重复。
+var privateKey = Symbol();
+var obj = {
+    [privateKey] : 'Hero'
+}
+// 访问时
+console.log(obj[privateKey]); //Hero
+
+
+
 
