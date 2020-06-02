@@ -216,4 +216,20 @@ session机制决定了客户只能获取到自己的session，彼此独立，互
 提高速度》内存里，客户第一次访问创建，生成后只要用户访问就更新维护。超过超时时间失效。
 生命周期：session浏览器启动关闭，session消失，而cookie预先设置生存周期，或永久保存到本地文件。
 
+// 箭头函数 将this指向当前环境
+class Json {
+    constructor() {
+        console.log(this);  // Json {}
+        this.a = 12;
+        this.fun = () => {
+            console.log(this);  // Json { a: 12, fun: [Function (anonymous)] }
+        }
+    }
+}
+let json = new Json();
+// json.fun();
+let eData = new Date();
+eData.fun = json.fun;
+eData.fun(); // Json { a: 12, fun: [Function (anonymous)] }
+
 
