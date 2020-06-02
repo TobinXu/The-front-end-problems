@@ -206,5 +206,14 @@ addEventListener方法用来为一个特定的元素绑定一个事件处理函�
 element.addEventListener(event, function, useCapture) // useCapture 设置为 true - 事件句柄在捕获阶段执行（即在事件捕获阶段调用处理函数）
 //                                            false- false- 默认。事件句柄在冒泡阶段执行（即表示在事件冒泡的阶段调用事件处理函数）
 
+// cookie和session  cookie通过在客户端记录信息确定用户身份（不可跨域），session通过在服务端记录信息确定用户身份
+http是一种无状态协议，一旦数据交换完毕，客户端和服务端就会断开连接，再次交互数据需要重新建立连接。
+cookie可以解决上面问题，服务器如果徐涛记录该用户状态，就使用response向客户端办法一个cookie，
+当客户端会把cookie保存起来，需要请求时，将请求网址和cookie一同提交给服务器，服务器进行辨认。
+
+session相当于在服务器上面建立一份客户档案，客户来访的时候只需要查询客户档案表即可。
+session机制决定了客户只能获取到自己的session，彼此独立，互不可见。
+提高速度》内存里，客户第一次访问创建，生成后只要用户访问就更新维护。超过超时时间失效。
+生命周期：session浏览器启动关闭，session消失，而cookie预先设置生存周期，或永久保存到本地文件。
 
 
