@@ -149,6 +149,19 @@ align-items:center; //垂直居中
 
 伪类一般匹配的是元素的一些特殊状态，如hover、link等，而伪元素一般匹配的特殊的位置，比如after、before等
 
+// 使用hover当鼠标悬停到文字上时改变颜色
+// 这种一般是借助hover事件，就是说当鼠标放到文字上时会触发一个事件，此时可以修改文字的样式。
+// 另外一种简单的办法就是直接用css的hover属性设置样式。
+/////直接用css的hover属性设置样式。保存.css, 在html代码引用！
+< a href="" class="test">链接内容</a>
+.test {
+    color:#eeffee;
+}
+.test:hover {
+    color:#ff0000;
+}
+
+
 
 // 选择器
 （1）id选择器（#myid）
