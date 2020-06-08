@@ -1,0 +1,56 @@
+在登录的时候，我用react中的fecth 总是 403
+刚开始不懂，瞎蒙：在请求json中加入前端设置： credentials: ‘include’，（ 允许 cookie 共享，跨域问题，传Cookie是必须配置）
+问题没解决，CREDENTIALS有一个规定，不传递Cookie时，不允许配置credentials
+后面在Stack Overflow上面发现了是后台的问题
+本质是跨域问题 前端端口号是在3000，后端是在5000.
+典型跨域问题
+在后台Controller中添加一个MyWebConfig类配置@CrossOrigin
+
+@Configuration
+public class MyWebConfig {
+    private final long MAX_AGE_SECS = 3600;
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
+                        .maxAge(MAX_AGE_SECS);
+            }
+
+
+        };
+    }
+}
+
+// 前端请求json代码
+const request = (options) => {
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+    })
+    
+    if(localStorage.getItem(ACCESS_TOKEN)) {
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+    }
+
+    const defaults = {headers: headers};
+    options = Object.assign({}, defaults, options);
+
+    return fetch(options.url, options)
+    .then(response => 
+        response.json().then(json => {
+            if(!response.ok) {
+                return Promise.reject(json);
+            }
+            return json;
+        })
+    );
+};
+
+
+
+// 学习博客
+https://www.cnblogs.com/mmzs/p/9167743.html
