@@ -122,7 +122,7 @@ m.has(o) //true
 m.delete(o)
 m.has(o) // false
 
-// 在实现一次
+// 再实现一次
 const map = new Map([
     ['name', '张三'],
     ['title', 'Author']
@@ -136,7 +136,7 @@ map.get('title') //Author
 
 // 居中
 // div使用绝对布局
-1.设置margin:AudioTrack;并设置top,left,right,bottom的值都相等。
+1.设置margin:auto;并设置top,left,right,bottom的值都相等。
 2.设置left和top都是50%，然后再用transform(-50%, -50%) 向左平移它的宽度的50%
 // div使用flex布局
 设置justify-content:center; // 水平居中
@@ -176,7 +176,7 @@ align-items:center; //垂直居中
 （10）伪元素选择器（::before、::after）
 （11）通配符选择器（*）
 
-// div嵌套div ，点击子级div不触发父级div点击事件
+// div嵌套div ，点击子级div触发父级div点击事件
 解决方法： 在子级div上增加一个事件 onClick="event.cancelBubble = true"，这样就可以只触发自身的点击事件了
  或者在孩子事件里面声明event.stopPropagation();//终止事件冒泡
 
