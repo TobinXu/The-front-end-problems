@@ -1,0 +1,33 @@
+1.默认绑定外层this
+
+this的值是可以用call方法修改的，而且只有在调用的时候我们才能确定this的值。而当我们使用箭头函数的时候，
+箭头函数会默认帮我们绑定外层this的值，所以在箭头函数中this的值和外层的this是一样的。
+不使用箭头函数
+const obj = {
+	a: function() { console.log(this) }    
+}
+obj.a()  //打出的是obj对象
+
+使用箭头函数
+const obj = {
+    a: () => {
+        console.log(this)
+    }
+}
+obj.a()  //打出来的是window
+
+
+2.多层嵌套
+
+例子：
+const obj = {
+    a: function() { console.log(this) },
+    b: {
+    	c: () => {console.log(this)}
+	}
+}
+obj.a()   //没有使用箭头函数打出的是obj
+obj.b.c()  //打出的是window对象！！
+
+obj.a调用后打出来的是obj对象，而obj.b.c调用后打出的是window对象而非obj，这表示多层对象嵌套里箭头函数里this是和最最外层保持一致的。
+
