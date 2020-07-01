@@ -26,5 +26,9 @@ template不会渲染成元素，用div的话会被渲染成元素。把if,show,f
 当 <style> 标签有 scoped 属性时，它的CSS 只作用于当前组件中的元素。
 
 Vue父子间通信
+语雀文档：https://www.yuque.com/docs/share/4167c387-2ef3-4cf4-bacc-6d2e6d2251d2?# 《学习笔记》
+
+vscode链接Git初始化
  git config --global user.email "you@example.com"
   git config --global user.name "Your Name"
+
