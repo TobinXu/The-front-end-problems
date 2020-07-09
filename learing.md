@@ -56,3 +56,92 @@ methods: {
 }
 这样就允许父级组件通过下面的代码聚焦 <base-input> 里的输入框：
 this.$refs.usernameInput.focus()
+
+// 备份二
+ // 供应商名称
+            <el-table-column prop="providerName" :label="$t('purchaseProvider.supplierName')"
+                             align="center" width="150" sortable>
+            </el-table-column>
+            // 供应商编号
+            <el-table-column prop="providerNo" :label="$t('purchaseProvider.supplierCode')"
+                             align="center" width="130" sortable>
+            </el-table-column>
+            // 线上供货渠道
+            <el-table-column prop="platformId" :label="$t('purchaseProvider.onlineSupplyChannels')"
+                             align="center" width="150" sortable>
+            </el-table-column>
+            // 联系人
+            <el-table-column prop="contact" :label="$t('purchaseProvider.contactPerson')"
+                             align="center" width="100" sortable>
+            </el-table-column>
+            // 手机
+            <el-table-column prop="mobile" :label="$t('purchaseProvider.mobilePhone')"
+                             align="center" width="150" sortable>
+            </el-table-column>
+            // 固话
+            <el-table-column prop="telno" :label="$t('purchaseProvider.telephone')"
+                             align="center" width="100" sortable>
+            </el-table-column>
+            // 邮箱
+            <el-table-column prop="email" :label="$t('purchaseProvider.email')"
+                             align="center" width="100" sortable>
+            </el-table-column>
+            // QQ
+            <el-table-column prop="qq" label="QQ" align="center" >
+            </el-table-column>
+            // 旺旺
+            <el-table-column prop="wangwang" :label="$t('purchaseProvider.wantWant')"
+                             align="center" width="100" >
+            </el-table-column>
+            // 传真
+            <el-table-column prop="fax" :label="$t('purchaseProvider.fax')"
+                             align="center" width="100" >
+            </el-table-column>
+            // 地址
+            <el-table-column prop="address" :label="$t('purchaseProvider.address')"
+                             align="center" width="300" >
+              <template slot-scope="scope">
+                {{getCountryName(scope.row.country)}} {{scope.row.province}} {{scope.row.city}} {{scope.row.district}} {{scope.row.address}}
+              </template>
+            </el-table-column>
+            // 邮编
+            <el-table-column prop="zip" :label="$t('purchaseProvider.postCode')" align="center" width="100">
+            </el-table-column>
+            // 自定义属性1
+            <el-table-column prop="prop1" :label="$t('purchaseProvider.customAttribute1')" align="center" width="100">
+            </el-table-column>
+            // 自定义属性2
+            <el-table-column prop="prop2" :label="$t('purchaseProvider.customAttribute2')" align="center" width="100">
+            </el-table-column>
+            // 自定义属性3
+            <el-table-column prop="prop3" :label="$t('purchaseProvider.customAttribute3')" align="center" width="100">
+            </el-table-column>
+            // 自定义属性4
+            <el-table-column prop="prop4" :label="$t('purchaseProvider.customAttribute4')" align="center" width="100">
+            </el-table-column>
+            // 启用状态
+            <el-table-column prop="deleted" :label="$t('purchaseProvider.enableStatus')" align="center" width="100" sortable>
+              <template slot-scope="scope">
+                {{scope.row.deleted === 0?$t('purchaseProvider.enable'):$t('purchaseProvider.deactivate')}}
+              </template>
+            </el-table-column>
+            // 备注
+            <el-table-column prop="remark" :label="$t('purchaseProvider.remark')" align="center" width="100">
+            </el-table-column>
+            // 创建时间
+            <el-table-column prop="created" width="150" :label="$t('purchaseProvider.createdTime')"
+                             align="center" sortable>
+            </el-table-column>
+
+
+            // 备份二
+
+            <el-tabs v-model="activeTag" @tab-click="changeTab">
+            <el-tab-pane :label="$t('goodsSuite.specTag')" name="0">
+              <SubTable :table-data="suiteDetailList" :table-title="specTitle"
+                        :currency="currency"></SubTable>
+            </el-tab-pane>
+            <el-tab-pane :label="$t('goodsSuite.logTag')" name="1">
+              <SubTable :table-data="suiteLogList" :table-title="suiteLogTitle"></SubTable>
+            </el-tab-pane>
+            </el-tabs>
