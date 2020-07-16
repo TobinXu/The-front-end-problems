@@ -269,3 +269,29 @@ var result = compare(5 ,10);
 // 总结一下: 当某个函数被调用时，会创建一个执行环境（execution context）及相应的作用域链。
 // 然后，使用 arguments 和其他命名参数的值来初始化函数的活动对象（activation object）。但在作用域
 // 链中，外部函数的活动对象始终处于第二位，外部函数的外部函数的活动对象处于第三位，
+
+
+
+文字超出一行，省略超出部分，显示'...'
+用text-overflow:ellipsis属性来，当然还需要加宽度width属来兼容部分浏览。
+overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap;
+ 
+
+多行文本溢出显示省略号
+
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 3;
+overflow: hidden;
+注：
+
+            ①-webkit-line-clamp用来限制在一个块元素显示的文本的行数。 为了实现该效果，它需要组合其他的WebKit属性。常见结合属性：
+
+            ②display: -webkit-box; 必须结合的属性 ，将对象作为弹性伸缩盒子模型显示 。
+
+            ③-webkit-box-orient 必须结合的属性 ，设置或检索伸缩盒对象的子元素的排列方式 。
+            
+            
+            
