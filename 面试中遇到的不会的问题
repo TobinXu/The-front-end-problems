@@ -276,8 +276,7 @@ var result = compare(5 ,10);
 用text-overflow:ellipsis属性来，当然还需要加宽度width属来兼容部分浏览。
 overflow: hidden;
 text-overflow:ellipsis;
-white-space: nowrap;
- 
+white-space: nowrap; // 和 normal 一样，连续的空白符会被合并。但文本内的换行无效。
 
 多行文本溢出显示省略号
 
