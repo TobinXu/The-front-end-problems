@@ -293,4 +293,283 @@ overflow: hidden;
             ③-webkit-box-orient 必须结合的属性 ，设置或检索伸缩盒对象的子元素的排列方式 。
             
             
-            
+
+
+css过渡
+div
+{
+transition-property: width;
+transition-duration: 1s;
+ // linear线性速度，ease 慢-》快-》慢， 
+ // ease-in以慢速开始， ease-out以慢速结束 ， ease-in-out 以慢速开始和结束
+transition-timing-function: linear;
+transition-delay: 2s;
+}
+缩写
+div{
+    transition: width 1s linear 2s;
+}
+
+css动画
+请用百分比来规定变化发生的时间，或用关键词 "from" 和 "to"，等同于 0% 和 100%。
+0% 是动画的开始，100% 是动画的完成。
+
+当您在 @keyframes 中创建动画时，请把它捆绑到某个选择器，否则不会产生动画效果。
+通过规定至少以下两项 CSS3 动画属性，即可将动画绑定到选择器：
+规定动画的名称
+规定动画的时长
+
+定义动画：
+例子1：
+@keyframes myfirst
+{
+0%   {background: red;}
+25%  {background: yellow;}
+50%  {background: blue;}
+100% {background: green;}
+}
+例子2：
+@keyframes myfirst
+{
+from {background: red;}
+to {background: yellow;}
+}
+运用：
+例子1：把 "myfirst" 动画捆绑到 div 元素，时长：5 秒：
+div
+{
+animation: myfirst 5s;
+}
+例子2：
+div
+{
+animation-name: myfirst;
+animation-duration: 5s;
+animation-timing-function: linear; // 运动节奏
+animation-delay: 2s; // 何时开始，这个就是等待两秒然后开始
+animation-iteration-count: infinite;
+animation-direction: alternate; // 规定动画在下一周期逆向地播放
+animation-play-state: running;
+}
+例子3：
+div
+{
+animation: myfirst 5s linear 2s infinite alternate;
+}
+注意：
+animation	所有动画属性的简写属性，除了 animation-play-state 属性。
+animation-fill-mode 设置CSS动画在执行之前和之后如何将样式应用于其目标：
+forwards 最后会保留变化后的状态
+backwards 立即应用第一个关键帧中定义的值，最后回到原先状态
+both 立即应用，最后还保留状态
+
+set、map实际中的应用
+set：
+Set和Array的区别是Set里的每一个元素都是唯一的，比如你有一个Array
+里面有4个元素[1, 2, 3, 1]，如果你把它转换成Set，就变成[1, 2, 3]了。
+所以我们可以利用Set的这个特性做整数数组的去重。但要注意的是，如果你的
+数组是[{name: 1}, {name: 1}]这样的包含Object的数组，那么你把它转换
+为Set时并不能去重，因为虽然这两个对象看起来一样，但在Set看来，这个数组里
+的两个对象是两个完全不同的值，所以并不符合去重的要求。
+
+map：
+Map和Object很类似，但Map有一个比较特殊的应用场景。如果你在开发时不确定
+键值对里面的键的名称，那么你需要用Map。举例来说，你需要动态地从MongoDB里
+获取键值并显示给用户，但也许你并不关心这些键值的键名到底是什么，那么在这种
+情况下，你可以用Map，例如这样：
+var myMap = new Map();
+
+var keyObj = {},
+    keyFunc = function () { return 'hey'},
+    keyString = "a string";
+
+myMap.set(keyString, "value associated with 'a string'");
+myMap.set(keyObj, "value associated with keyObj");
+myMap.set(keyFunc, "value associated with keyFunc");
+console.log(myMap.get(keyFunc));
+
+打印出的是  value associated with keyFunc
+
+
+const对象
+声明必须初始化，全局常量不会变为window的对象属性。
+const声明创建一个值的只读引用。但这并不意味着它所持有的值是不可变的，
+只是变量标识符不能重新分配。例如，在引用内容是对象的情况下，这意味着
+可以改变对象的内容（例如，其参数）。
+// 常量可以定义成对象
+const MY_OBJECT = {"key": "value"};
+// 对象属性并不在保护的范围内，下面这个声明会成功执行
+MY_OBJECT.key = "otherValue";
+// 也可以用来定义数组
+const MY_ARRAY = [];
+// It's possible to push items into the array
+// 可以向数组填充数据
+MY_ARRAY.push('A'); // ["A"]
+// 但是，将一个新数组赋给变量会引发错误
+MY_ARRAY = ['B']
+
+
+call和apply的性能对比
+
+结论：call比apply快
+在看源码的过程中，总会遇到这样的写法：var triggerEvents = function(events, args) {
+    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
+    switch (args.length) {
+      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
+      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
+      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
+      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
+      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args); return;
+    }
+};
+复制代码（ 代码来自 backbone ）
+作者会在参数为3个（包含3）以内时，优先使用 call 方法进行事件的处理。
+而当参数过多（多余3个）时，才考虑使用 apply 方法。这个的原因就是 call 比 apply 快。
+
+具体原因：
+call 方法比 apply 快的原因是 call 方法的参数格式正是内部方法所需要的格式。
+
+Function.prototype.apply (thisArg, argArray)
+
+1、如果 IsCallable（Function）为false，即 Function 不可以被调用，则抛出一个 TypeError 异常。
+2、如果 argArray 为 null 或未定义，则返回调用 Function 的 [[Call]] 内部方法的结果，提供thisArg 和一个空数组作为参数。
+3、如果 Type（argArray）不是 Object，则抛出 TypeError 异常。
+4、获取 argArray 的长度。调用 argArray 的 [[Get]] 内部方法，找到属性 length。 赋值给 len。
+5、定义 n 为 ToUint32（len）。
+6、初始化 argList 为一个空列表。
+7、初始化 index 为 0。
+8、循环迭代取出 argArray。重复循环 while（index < n）
+a、将下标转换成String类型。初始化 indexName 为 ToString(index).
+b、定义 nextArg 为 使用 indexName 作为参数调用argArray的[[Get]]内部方法的结果。
+c、将 nextArg 添加到 argList 中，作为最后一个元素。
+d、设置 index ＝ index＋19、返回调用 Function 的 [[Call]] 内部方法的结果，
+提供 thisArg 作为该值，argList 作为参数列表。
+
+Function.prototype.call (thisArg [ , arg1 [ , arg2, … ] ] )
+
+1、如果 IsCallable（Function）为 false，即 Function 不可以被调用，
+则抛出一个 TypeError 异常。
+2、定义 argList 为一个空列表。
+3、如果使用超过一个参数调用此方法，则以从arg1开始的从左到右的顺序将每个参数附加为 argList 的最后一个元素
+4、返回调用func的[[Call]]内部方法的结果，提供 thisArg 作为该值，argList 作为参数列表。
+我们可以看到，明显 apply 比 call 的步骤多很多。由于 apply 中定义的参数格式（数组），
+使得被调用之后需要做更多的事，需要将给定的参数格式改变（步骤8）。
+同时也有一些对参数的检查（步骤2），在 call 中却是不必要的。
+另外一个很重要的点：在 apply 中不管有多少个参数，都会执行循环，也就是步骤 6-8，
+在 call 中也就是对应步骤3 ，是有需要才会被执行。
+
+
+ES5和ES6的继承区别
+
+
+任务队列（宏任务队列可以有多个，微任务队列只有一个）
+
+栈（主线程执行完成以后从任务队列里面一个一个取一个一个执行）
+——》遇到异步函数如setTimeout交给指定模块处理（runtime运行环境提供的），继续同步代码执行
+——》异步函数达到触发条件，如定时器导师、Ajax请求返回，压入指定任务队列
+——》栈（主线程执行完成以后从任务队列里面一个一个取一个一个执行），如此循环。
+
+众所周知，JavaScript的一大特点就是是单线程，所有任务都需要在主线程里排队等待执行。
+
+而JavaScript里的任务又分为同步任务和异步任务两种，基于事件循环（Event Loop）机制执行任务。
+
+同步任务作为首要任务会在主线程里执行，异步任务则被“发配”到由另一个线程管理的任务队列中等待处理。异步任务符合条件（比如ajax请求到数据，setTimeout延时到期）后，会在任务队列中添加可执行“事件”，等待主线程中的同步任务执行完毕到任务队列里读取当前可执行的任务，将其加入主线程中执行，以此循环。
+
+根据HTML Standard中的描述，一个事件循环中的执行流程大致如下。
+
+1.选择最早的任务
+
+2.设置事件循环中当前任务为上一步中选择的任务
+
+3.执行该任务
+
+4.将事件循环中的当前任务重新设置为空
+
+5.将主线程中执行的任务移除
+
+6.执行Microtask中的任务
+
+7.执行页面渲染步骤，更新UI
+
+
+通过阅读Promise/A+规范，可以得知异步的实现可分为两个机制，分别是macro-task和micro-task。
+
+Macrotasks包括: script（整体代码）、setTimeout, setInterval, setImmediate, I/O, UI Rendering；
+
+Microtasks包括: process.nextTick, Promise, Object.observe, MutationObserver。
+
+Macrotasks、Microtasks执行机制：
+
+1.主线程执行完后会先到micro-task队列中读取可执行任务
+
+2.主线程执行micro-task任务
+
+3.主线程到macro-task任务队列中读取可执行任务
+
+4.主线程执行macro-task任务
+
+5....转到Step 1
+
+这里注意的是，UI Rendering是在micro-task之后执行，需要在UI渲染之前执行的逻辑，
+一般采用micro-task异步回调方式进行调用。
+
+同样，micro-task队列不宜过长，给micro-task队列添加过多回调阻塞macro-task队列的
+任务执行是小事，重点是这有可能会阻塞UI Render，导致页面不能更新。浏览器也会基于
+性能方面的考虑，对micro-task中的任务个数进行限制。
+
+
+
+BFC 块格式化上下文（Block Formatting Context，BFC） 
+
+float CSS属性指定一个元素应沿其容器的左侧或右侧放置，
+允许文本和内联元素环绕它。该元素从网页的正常流动(文档流)中移除，尽管仍然保持部分的流动性。
+clear CSS 属性指定一个元素是否必须移动(清除浮动后)到在它之前的浮动元素下面。
+clear 属性适用于浮动和非浮动元素。
+
+块格式化上下文对浮动定位与清除浮动都很重要。
+浮动定位和清除浮动时只会应用于同一个BFC内的元素。浮动不会影响其它BFC中元素的布局，
+而清除浮动只能清除同一BFC中在它前面的元素的浮动。外边距折叠（Margin collapsing）
+也只会发生在属于同一BFC的块级元素之间。
+
+下列方式会创建块格式化上下文：
+
+根元素（<html>）
+浮动元素（元素的 float 不是 none）
+绝对定位元素（元素的 position 为 absolute 或 fixed）
+行内块元素（元素的 display 为 inline-block）
+表格单元格（元素的 display 为 table-cell，HTML表格单元格默认为该值）
+overflow 值不为 visible 的块元素
+display 值为 flow-root 的元素
+contain 值为 layout、content 或 paint 的元素
+弹性元素（display 为 flex 或 inline-flex 元素的直接子元素）
+
+
+透明度、visiblity、display区别
+opacity 用来设置透明度
+display 定义建立布局时元素生成的显示框类型
+visibility 用来设置元素是否可见。
+opacity、visibility、display 这三个属性分别取值 0、hidden、none
+都能使元素在页面上看不见，但是他们在方方面面都还是有区别的。
+
+1.是否占据空间：
+使用 opacity 和 visibility 属性时，元素还是会占据页面空间的，
+而使用 display 属性时，元素不占据页面空间。
+
+2.对子元素的影响
+opacity和display属性，父元素对子元素有影响，而visiblity子元素不受父元素影响
+
+3.自身绑定的事件是否继续触发
+使用 visibility 和 display 属性，自身的事件不会触发，
+而使用 opacity 属性，自身绑定的事件还是会触发的。
+
+4.是否影响其他元素触发事件
+visibility 和 display 属性是不会影响其他元素触发事件的，
+而 opacity 属性 如果遮挡住其他元素，其他的元素就不会触发事件了。
+
+
+
+
+
+
+
+
