@@ -460,20 +460,86 @@ Function.prototype.call (thisArg [ , arg1 [ , arg2, … ] ] )
 
 
 ES5和ES6的继承区别
+声明阶段：
+
+ES5 是通过构造函数来声明一个“类”，在 ES6 中 通过关键字 Class 来进行声明。但是 ES5 的构造函数存在变量提升，但是 Class 声明不存在变量提升。
+
+// es5
+console.log(new A()); // A {}
+function A(){
+    return this;
+}
+
+// es6
+console.log(new B()); // ReferenceError: B is not defined
+Class B {
+    constructor() {
+
+    }
+}
+
+继承：
+
+ES5 通过修改原型链进行继承，ES6 通过关键字extend进行继承，但是子类的constructor调用时，需要先利用super调用父类的构造方法。否则新建实例对象时，会报错。
+
+ES5继承的实质，是通过将父类的方法添加到子类的实例中。
+// es5
+function Super(name) {
+    this.name = name || 'nimo';
+    return this;
+}
+Super.prototype.getName = function () {
+    return this.name;
+};
+
+function Sub(ages) {
+    this.ages = ages || 20;
+    return this;
+}
+Sub.prototype = new Super();
+Sub.prototype.constructor = Sub;
+
+ES6继承的实质，是通过将父类的属性和方法添加到this中，即将父类的属性和方法添加到子类实例对象上，
+即子类的实例其实是基于父类创建的。这也就是为什么在ES6继承中，子类的构造函数必须先
+调用super方法才能调用this。
+// es6
+class Super {
+    constructor(name) {
+        this.name = name || 'nimo';
+    }
+    getName() {
+        return this.name;
+    }
+}
+
+class Sub extends Super {
+    constructor(ages) {
+        super();
+        this.ages = ages || 20;
+    }
+}
+
+ES6 与 ES5 中的继承有 2 个区别:第一个是，ES6 中子类会继承父类的属性，
+第二个区别是，super() 与 A.call(this) 是不同的，在继承原生构造函数的情况下，
+体现得很明显，ES6 中的子类实例可以继承原生构造函数实例的内部属性，而在 ES5 中做不到。
+
+
 
 
 任务队列（宏任务队列可以有多个，微任务队列只有一个）
 
 栈（主线程执行完成以后从任务队列里面一个一个取一个一个执行）
 ——》遇到异步函数如setTimeout交给指定模块处理（runtime运行环境提供的），继续同步代码执行
-——》异步函数达到触发条件，如定时器导师、Ajax请求返回，压入指定任务队列
+——》异步函数达到触发条件，如定时器到时、Ajax请求返回，压入指定任务队列
 ——》栈（主线程执行完成以后从任务队列里面一个一个取一个一个执行），如此循环。
 
 众所周知，JavaScript的一大特点就是是单线程，所有任务都需要在主线程里排队等待执行。
 
 而JavaScript里的任务又分为同步任务和异步任务两种，基于事件循环（Event Loop）机制执行任务。
 
-同步任务作为首要任务会在主线程里执行，异步任务则被“发配”到由另一个线程管理的任务队列中等待处理。异步任务符合条件（比如ajax请求到数据，setTimeout延时到期）后，会在任务队列中添加可执行“事件”，等待主线程中的同步任务执行完毕到任务队列里读取当前可执行的任务，将其加入主线程中执行，以此循环。
+同步任务作为首要任务会在主线程里执行，异步任务则被“发配”到由另一个线程管理的任务队列中等待处理。
+异步任务符合条件（比如ajax请求到数据，setTimeout延时到期）后，会在任务队列中添加可执行“事件”，
+等待主线程中的同步任务执行完毕到任务队列里读取当前可执行的任务，将其加入主线程中执行，以此循环。
 
 根据HTML Standard中的描述，一个事件循环中的执行流程大致如下。
 
