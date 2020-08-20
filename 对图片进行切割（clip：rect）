@@ -1,3 +1,6 @@
+clip只对绝对定位和固定定位的元素生效
+
+
 <html>
 <head>
 <style type="text/css">
@@ -16,3 +19,21 @@ clip:rect(0px 200px 200px 0px) ////上左数字展示想要隐藏的，右下数
 
 </html>
 
+
+/* CSS代码 */
+<a href="#" class="logo">
+    <h1>本网站名字</h1>
+</a>
+
+为了隐藏上面的文字，有以下几种方案可以供我们选择：
+
+使用display:none或者visibility:hidden。缺点：屏幕阅读设备会忽略这些文字；
+使用text-align缩进。缺点：如果缩进过大到屏幕之外，屏幕阅读设备也是不会读取的；
+使用color: transparent。原生IE8浏览器器并不支持，并且还是能够选中文本。
+借助absolute和clip（关于clip用法不熟悉的同学可以自己百度下，很简单，注：clip只对绝对定位和固定定位的元素生效）这两个属性，
+能够同时满足视觉上隐藏和屏幕阅读设备能够读取的要求，核心代码如下：
+/* CSS代码 */
+h1{
+    position: absolute;
+    clip: rect(0 0 0 0);
+}
