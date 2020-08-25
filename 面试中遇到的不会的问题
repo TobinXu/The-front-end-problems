@@ -136,8 +136,12 @@ map.get('title') //Author
 
 // 居中
 // div使用绝对布局
-1.设置margin:auto;并设置top,left,right,bottom的值都相等。
+1.设置margin:auto;并设置top,left,right,bottom的值都相等。（由于宽高固定，因此对应方向实现平分，可以实现水
+平和垂直方向上的居中。）
 2.设置left和top都是50%，然后再用transform: translate(-50%, -50%); 向左平移它的宽度的50%
+（先将元素的左上角通过top:50%和left:50%定位到页面的中心，然后再通过translate来调整元素
+的中心点到页面的中心。）
+
 // div使用flex布局
 设置justify-content:center; // 水平居中
 align-items:center; //垂直居中
