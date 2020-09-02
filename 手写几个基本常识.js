@@ -33,7 +33,7 @@ function getJSON(url) {
         // 新建一个http请求
         xhr.open("GET", url, true);
         // 设置状态监听函数
-        xhr.onreadystatechange = funciton() {
+        xhr.onreadystatechange = function() {
             if (this.readyState !==4) return;
             // 当请求成功或失败时，改变promsie的状态
             if (this.state === 200) {
@@ -68,7 +68,7 @@ function getJSON(url) {
 // 浅拷贝的实现
 function shallowCopy(object) {
     // 只拷贝对象
-    if (!object || typeof object !== "function") return;
+    if (!object || typeof object !== "object") return;
     // 根据object类型判断是新建一个数组还是对象
     let newObjcet = Array.isArray(object) ? [] : {};
     // 遍历object，并且判断是object的属性才拷贝
@@ -82,7 +82,7 @@ function shallowCopy(object) {
 // 深拷贝的实现
 function deepCopy(objcet) {
     // 只拷贝对象
-    if (!objcet || typeof object !== "funciton") return;
+    if (!objcet || typeof object !== "object") return;
     // 根据object类型判断是新建一个数组还是对象
     let newObject = Array.isArray(object) ? [] : {};
     // 遍历object，并且判断是object的属性才拷贝，遇到引用类型，递归调用深拷贝
@@ -174,7 +174,7 @@ Function.prototype.myBind = function(context) {
         throw new TypeError("Error");
     }
     // 获取参数
-    var args = [...arguments].slice(1);,
+    var args = [...arguments].slice(1);
     fn = this;
     return function Fn() {
         // 根据调用方式，传入不同绑定值
@@ -240,7 +240,7 @@ Function.prototype.myBind = function(context) {
     }
     // 将两个方法传入函数执行
     try{
-        fn(resolve, rejct);
+        fn(resolve, reject);
     } catch(e) {
         // 遇到错误，捕获错误并执行reject函数
         reject(e);

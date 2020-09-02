@@ -417,8 +417,6 @@ Vue 开启一个异步队列，并缓冲在此事件循环中发生的所有数�
 总之，异步是单独的一个tick，不会和同步在一个 tick 里发生，也是 DOM 不会马上改变的原因。
 
 
-继承 有寄生组合继承和ES6的extends的区别
-
 
 
 vue123的区别 ：https://juejin.im/post/6844904120189452302#heading-5
@@ -426,3 +424,53 @@ vue123的区别 ：https://juejin.im/post/6844904120189452302#heading-5
 vue2,3我自己看到的区别没有webpack的配置，需要自己写，3有gui操作
 [思考]我一个后端，我觉得应该这样答，vue3完善了自己的工具链，做了更好的工程化，将webpack的配置整合到自己的体系中去，但同时也让vue逐渐拥有了壁垒
 数据双向绑定的方法更换成代理的方式了，更好的支持了ts的语法[捂脸]
+
+
+继承 有寄生组合继承和ES6的extends的区别
+class ColorPoint extends Point {
+  constructor(x, y, color) {
+    super(x, y); // 调用父类的constructor(x, y)
+    this.color = color;
+  }
+
+  toString() {
+    return this.color + ' ' + super.toString(); // 调用父类的toString()
+  }
+}
+子类必须在constructor方法中调用super方法，否则新建实例时会报错。这是因为子类自己的this对象
+，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子
+类自己的实例属性和方法。如果不调用super方法，子类就得不到this对象。
+
+es5与es6继承区别：
+ES5 的继承，实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面（Parent.apply(this)）。ES6 的继承机制完全不同，实质是先将父类实例对象的属性和方法，加到this上面（所以必须先调用super方法），然后再用子类的构造函数修改this。
+
+另一个需要注意的地方是，在子类的构造函数中，只有调用super之后，才可以使用this关键字，否则会报错。这是因为子类实例的构建，基于父类实例，只有super方法才能调用父类实例。
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+class ColorPoint extends Point {
+  constructor(x, y, color) {
+    this.color = color; // ReferenceError
+    super(x, y);
+    this.color = color; // 正确
+  }
+}
+
+上面代码中，子类的constructor方法没有调用super之前，就使用this关键字，结果报错，而放在super方法之后就是正确的。
+
+ES6 允许继承原生构造函数定义子类，因为 ES6 是先新建父类的实例对象this，然后再用子类的构造函数修饰this，使得父类的所有行为都可以继承。下面是一个继承Array的例子。
+
+
+
+
+1.es5的继承实质是先创造子类的实例对象，然后将父类的方法添加到this上面。es6则不同，实质是先创造父类的实例对象this（所以必须先调用super方法),然后用子类的构造函数修改this.
+2.子类B的__proto__属性指向父类A 即B.proto = A. 而es5中的构造函数的__proto__是指向Function.prototyope的。我看的上面也有人详细说明，我就不详细说明了
+3.es6允许继承原生构造函数。因为es6先新建父类的实例对象this。然后再用子类的构造函数修改this，使得父类的所有行为都可以继承。因此可以在原生数据结构的基础上定义自己的数据结构。
+
+
+对CSS的position彻底搞懂文章：
+https://www.yuque.com/docs/share/d8294a75-63d2-459c-80b5-4649c08b8b8c?# 《css的position》
