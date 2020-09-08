@@ -6,7 +6,7 @@ let xhr = new XMLHttpRequest();
 xhr.open("GET", SERVER_URL, true);
 // 设置状态监听函数
 xhr.onreadystatechange = function() {
-    if (this.state !== 4) return;
+    if (this.readyState !== 4) return;
     // 当请求成功时
     if (this.status === 200) {
         handle(this.response);
@@ -36,7 +36,7 @@ function getJSON(url) {
         xhr.onreadystatechange = function() {
             if (this.readyState !==4) return;
             // 当请求成功或失败时，改变promsie的状态
-            if (this.state === 200) {
+            if (this.status === 200) {
                 resolve(this.response)
             } else {
                 reject(new Error(this.statusText));
@@ -128,7 +128,7 @@ function throttle(fn, delay) {
 // call函数的实现
 Function.prototype.myCall = function(context) {
     // 判断调用对象
-    if (typeof this !== "funciton") {
+    if (typeof this !== "function") {
         console.error("type error");
     }
     // 获取参数
@@ -188,7 +188,7 @@ Function.prototype.myBind = function(context) {
  // 手写Promise   
  const PENDING = "pending";
  const RESOLVED = "resolved";
- const REJECTED = "reejcted";
+ const REJECTED = "rejcted";
  function MyPromsie(fn) {
      // 保存初始化状态
      var slef = this;
@@ -196,7 +196,7 @@ Function.prototype.myBind = function(context) {
      this.state = PENDING;
      // 用于保存resolved或rejected传入的值
      this.value = null;
-     // 用于保存resolve的回调函数
+     // 用于保存resolved的回调函数
      this.resolvedCallbacks = [];
      // 用于保存rejected的回调函数
      this.rejectedCallbacks = [];
