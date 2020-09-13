@@ -481,23 +481,26 @@ Function.prototype.call (thisArg [ , arg1 [ , arg2, … ] ] )
 
 
 ES5和ES6的继承区别
-声明阶段：
+好文章解析：
 
-ES5 是通过构造函数来声明一个“类”，在 ES6 中 通过关键字 Class 来进行声明。但是 ES5 的构造函数存在变量提升，但是 Class 声明不存在变量提升。
+https://www.cnblogs.com/annika/p/9073572.html
+一、实质
 
-// es5
-console.log(new A()); // A {}
-function A(){
-    return this;
-}
+ES5的继承实质：先创建子类，再实例化父类，并将父类的方法添加添加到子类this中。通过原型或构造函数机制来实现。
 
-// es6
-console.log(new B()); // ReferenceError: B is not defined
-Class B {
-    constructor() {
+ES6实质: 先创建父类，实例化子类中通过调用super方法访问父级后，在通过修改this实现继承。如果不调用super方法，子类得不到this对象
 
-    }
-}
+es6如何实现继承：ES6实现继承是通过关键字extends、super来实现继承。
+
+（通过class关键字定义类，里面有构造方法，类之间通过extends关键字实现继承。子类必须在constructor方法中调用super方法，否则新建实例报错。因为子类没有自己的this对象，而是继承了父类的this对象，然后对其调用。如果不调用super方法，子类得不到this对象）
+
+注意：super关键字指代父类的实例，即父类的this对象。在子类构造函数中，调用super后，才可使用this关键。
+
+子类必须在constructor方法中调用super方法，否则新建实例时会报错。这是因为子类没有自己的this对象，而是继承父类的this对象，
+然后对其进行加工，如果不调用super方法，子类就得不到this对象。因此，只有调用super之后，才可以使用this关键字。
+
+
+
 
 继承：
 
