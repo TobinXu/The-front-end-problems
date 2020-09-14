@@ -46,7 +46,7 @@ function getJSON(url) {
         xhr.onerror = function() {
             reject(new Error(this.statusText));
         };
-        // 设置相应的数据类型
+        // 设置响应的数据类型
         xhr.responseType = "json";
         // 设置请求头信息
         xhr.setRequestHeader("Accpet", "application/json");
@@ -275,6 +275,41 @@ Function.prototype.myBind = function(context) {
      }
  };
 
- 
+// instanceof 运算符用于判断构造函数的 prototype 属性是否出现在对象的原型链中的任何位置。
+// instanceof的实现
+function MyInstanceof(left, right) {
+    let proto = Object.getPrototypeOf(left); // 获取对象的原型
+    let prototype = right.prototype;  // 获取构造函数指向原型的prototype指针
+    while(true) {
+        if (!proto) return false; // 如果proto为null 返回false
+        if (proto === prototype) return true; 
+        proto = Object.getPrototypeOf(proto); // 继续向上面的原型链查找
+    }
+}
 
+// new操作符具体干了什么
+// 1. 首先创建一个新的空对象
+// 2. 设置原型，讲对象的原型设置为函数的prototype对象
+// 3. 让函数的this指向这个对象，执行构造函数的代码(为这个新对象添加属性)
+// 4. 判断函数的返回值类型，如果是值类型，返回创建的对象。如果是引用类型，就返回这个引用类型的对象
+function objectFactory() {
+    let newObject = null,
+    constructor = Array.prototype.shift.call(arguments),
+    result = null;
+    // 参数判断
+    if (typeof constructor !== "function") {
+        return new TypeError("type error");
+    }
+    // 新建一个空对象，对象的原型为构造函数的prototype对象
+    newObject = Object.create(constructor.prototype);
+    // 将this指向新建对象，并执行函数
+    result = constructor.apply(newObject, arguments);
+    // 判断返回对象
+    let flag = 
+    result && (typeof result === "object" || typeof result === "function");
+    // 判断返回结果
+    return flag ? result : newObject;
+}
+// 使用方法
+// objectFactory(构造函数, 初始化参数);
 
