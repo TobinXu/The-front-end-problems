@@ -313,3 +313,42 @@ function objectFactory() {
 // 使用方法
 // objectFactory(构造函数, 初始化参数);
 
+
+// 手写sleep函数
+function sleep1(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    })
+}
+sleep1(1000).then(() => {
+    console.log(2000);
+})
+
+function sleep2(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms)
+    })
+}
+async function init() {
+    await sleep2(1000);
+}
+init().then(() => {
+    console.log(3000);
+})
+
+// 使用reduce模拟map
+Array.prototype.MyMap = function(fn, callbackThis) {
+    // 最终返回的新数组
+    let res = [];
+    // 定义回调函数的执行环境
+    // call第一个参数传入null，则this指向全局对象，同map的规则
+    let CBThis = callbackThis || null;
+    this.reduce((before, after, idx, arr) => {
+        // 传入map回调函数拥有的参数
+        // 把每一项的执行结果push进res中
+        res.push(fn.call(CBThis, after, idx, arr));
+    },null);
+    return res;
+}
+
+https://juejin.im/post/6844903733860499463
