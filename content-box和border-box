@@ -4,7 +4,7 @@
 大白话 在盒子模型中，height width padding border 是分开独立的
 
 //border-box
-border-box就是用元素内容和padding和border一起决定width和height，啥意识，就是width和元素的内容以及padding和border相互制约。下面用几句话简洁解释一下。
+border-box就是用元素内容和padding和border一起决定width和height，啥意思，就是width和元素的内容以及padding和border相互制约。下面用几句话简洁解释一下。
 大白话 在盒子模型中 height 和 width的组成包括 padding 和border
 
 width和height改变，paddign和border不改变时，元素内容的宽高会发生相应的改变，改变的值就是width和height改变的值。
@@ -13,5 +13,8 @@ paddign和border改变，width和height不改变时，元素内容的宽高会�
 
 ————————————————
 实际场景
-我更喜欢用border-box，因为border-box更灵活一点，举个例子，我在业务中遇到一个问题，我的商品详情页的一个盒子是高度自适应的，为146px，但是在ie8浏览器上显示为146.8px，如何解决，如果对盒子设置height:146px;则会出现被撑高的情况，因为box-sizing默认为content-box，你给元素设置宽高，只是给元素内容设置宽高，你元素的总高度是heigtht + border + padding所以就会出现撑高，解决方法就是给当前的盒子设置box-sizing: border-box这样你设置高度为146px时，会默然将元素内容的高度进行相应减少来保证整体高度为146px，这个最大的好处就是你这个盒子有好几个，而且有不同的padding和border值，解决这个的最好的方法就是给盒子设置border-box
+我更喜欢用border-box，因为border-box更灵活一点，举个例子，我在业务中遇到一个问题，我的商品详情页的一个盒子是高度自适应的，为146px，
+但是在ie8浏览器上显示为146.8px，如何解决，如果对盒子设置height:146px;则会出现被撑高的情况，因为box-sizing默认为content-box，你给元素设置宽高，
+只是给元素内容设置宽高，你元素的总高度是heigtht + border + padding所以就会出现撑高，解决方法就是给当前的盒子设置box-sizing: border-box这样你设置高度为146px时，
+会默认将元素内容的高度进行相应减少来保证整体高度为146px，这个最大的好处就是你这个盒子有好几个，而且有不同的padding和border值，解决这个的最好的方法就是给盒子设置border-box。
 ———————————————
