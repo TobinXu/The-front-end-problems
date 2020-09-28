@@ -317,8 +317,6 @@ overflow: hidden;
 
 
 css过渡
-div
-{
 transition-property: width;
 transition-duration: 1s;
  // linear线性速度，ease 慢-》快-》慢， 
