@@ -6,62 +6,62 @@
 // console.log(Object.keys(obj)); // console: ['0', '1', '2']
 
 
-var providerList = [
-    {
-        "id":44,
-        "name":"WST供应商"
-    },
-    {
-        "id":22,
-        "name":"供应商1"
-    },
-    {
-        "id":45,
-        "name":"迎男测试供应商"
-    },
-    {
-        "id":23,
-        "name":"供应商2"
-    },
-    {
-        "id":46,
-        "name":"LYN测试供应商"
-    },
-    {
-        "id":24,
-        "name":"供应商3"
-    },
-    {
-        "id":47,
-        "name":"李迎男供应商"
-    },
-    {
-        "id":25,
-        "name":"供应商4"
-    },
-    {
-        "id":26,
-        "name":"娟娟供应商"
-    },
-    {
-        "id":27,
-        "name":"孔亚杰供应商"
-    },
-    {
-        "id":28,
-        "name":"娟娟供应商111"
-    },
-    {
-        "id":29,
-        "name":"小星星"
-    },]
+// var providerList = [
+//     {
+//         "id":44,
+//         "name":"WST供应商"
+//     },
+//     {
+//         "id":22,
+//         "name":"供应商1"
+//     },
+//     {
+//         "id":45,
+//         "name":"迎男测试供应商"
+//     },
+//     {
+//         "id":23,
+//         "name":"供应商2"
+//     },
+//     {
+//         "id":46,
+//         "name":"LYN测试供应商"
+//     },
+//     {
+//         "id":24,
+//         "name":"供应商3"
+//     },
+//     {
+//         "id":47,
+//         "name":"李迎男供应商"
+//     },
+//     {
+//         "id":25,
+//         "name":"供应商4"
+//     },
+//     {
+//         "id":26,
+//         "name":"娟娟供应商"
+//     },
+//     {
+//         "id":27,
+//         "name":"孔亚杰供应商"
+//     },
+//     {
+//         "id":28,
+//         "name":"娟娟供应商111"
+//     },
+//     {
+//         "id":29,
+//         "name":"小星星"
+//     },]
 
 
-Object.keys(providerList).forEach(idx => {
-    if(providerList[idx].id === 29) {
-        console.log(providerList[idx].name);
-    }     
-    })
+// Object.keys(providerList).forEach(idx => {
+//     if(providerList[idx].id === 29) {
+//         console.log(providerList[idx].name);
+//     }     
+//     })
     
     
 
