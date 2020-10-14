@@ -685,5 +685,34 @@ js关于no Line Terminator here规则（不能插入换行符的规则，负责�
 8.yield之后不能插入换行
 
 
+winter的重学前端：
+1.实际上JavaScript对象的运行时是一个“属性的集合”，属性以字符串或者Symbol为key，以数据属性特征值或者访问器属性特征值为value。
 
+2.
+Object.create = function(prototype){
+    var cls = function(){}
+    cls.prototype = prototype;
+    return new cls;
+}
+这段代码创建了一个空函数作为类，并把传入的原型挂在了它的 prototype，最后创建了一个它的实例，根据 new 的行为，这将产生一个以传入的第一个
+参数为原型的对象。这个函数无法做到与原生的 Object.create 一致，一个是不支持第二个参数，另一个是不支持 null 作为原型，所以放到今天意义已
+经不大了。
 
+留给你一个小练习：我们现在要实现一个红绿灯，把一个圆形 div 按照绿色 3 秒，黄色 1 秒，红色 2 秒循环改变背景色
+function sleep(duration) {
+   return new Promise(function(resolve) {
+     setTimeout(resolve, duration);
+   })
+}
+async function changeColor(duration, color) {
+  document.getElementById("traffic-light").style.background = color;
+  await sleep(duration);
+}
+async function main() {
+  while(true) {
+    await changeColor(3000, 'green');
+    await changeColor(1000, 'yellow');
+    await changeColor(2000, 'red');
+  }
+}
+main();
