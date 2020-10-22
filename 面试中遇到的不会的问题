@@ -250,7 +250,7 @@ session机制决定了客户只能获取到自己的session，彼此独立，互
 提高速度》内存里，客户第一次访问创建，生成后只要用户访问就更新维护。超过超时时间就失效。
 生命周期：session浏览器启动关闭，session消失，而cookie预先设置生存周期，或永久保存到本地文件。
 
-// 箭头函数 将this指向当前环境
+// 箭头函数 箭头函数会默认帮我们绑定外层this的值，所以在箭头函数中this的值和外层的this是一样的。
 class Json {
     constructor() {
         console.log(this);  // Json {}
@@ -670,7 +670,7 @@ http状态码
 
 
 js关于自动插入分号的规则
-规则1：要有换行符，且下一个符号是不符合语法的，那么久尝试插入分号。
+规则1：有换行符，且下一个符号是不符合语法的，那么就尝试插入分号。
 规则2：有换行符，且语法中规定此处不能有换行符，那么自动插入分号。
 规则3：源代码结束处，不能形成完整的脚本或模块结构，那么就自动插入分号。
 
@@ -716,3 +716,33 @@ async function main() {
   }
 }
 main();
+
+
+// 实现一个add方法，使计算结果能够满足如下预期：
+add(1)(2)(3) = 6;
+add(1, 2, 3)(4) = 10;
+add(1)(2)(3)(4)(5) = 15;
+
+function add() {
+    // 第一次执行时，定义一个数组专门用来存储所有的参数
+    var _args = Array.prototype.slice.call(arguments);
+
+    // 在内部声明一个函数，利用闭包的特性保存_args并收集所有的参数值
+    var _adder = function() {
+        _args.push(...arguments);
+        return _adder;
+    };
+
+    // 利用toString隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回
+    _adder.toString = function () {
+        return _args.reduce(function (a, b) {
+            return a + b;
+        });
+    }
+    return _adder;
+}
+
+add(1)(2)(3)                // 6
+add(1, 2, 3)(4)             // 10
+add(1)(2)(3)(4)(5)          // 15
+add(2, 6)(1)                // 9

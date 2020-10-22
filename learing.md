@@ -170,7 +170,7 @@ typeof {}的值 // object
 
 // 浅拷贝的实现：
 function shallowCopy(object) {
-  // 只拷贝对象
+  // 只拷贝对象属性
   if (!object || typeof object !== "object") return;
   // 根据object的类型判断来创建一个数组或者对象
   let newObject = Array.isArray(object) ? [] : {};

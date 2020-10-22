@@ -195,7 +195,7 @@ let requestImg = new Promise(function(resolve, reject) {
     }
 });
 //延时函数，用于给请求计时
-let tineOut = new Promise(function(resolve, reject) {
+let timeout = new Promise(function(resolve, reject) {
     setTimeout(function() {
         reject('图片请求超时');
     }, 5000);
