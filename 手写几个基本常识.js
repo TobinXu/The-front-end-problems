@@ -352,3 +352,55 @@ Array.prototype.MyMap = function(fn, callbackThis) {
 }
 
 https://juejin.im/post/6844903733860499463
+
+// new操作符的实现
+// 1.新建一个空对象
+// 2.将他的prototype指向构造函数的原型
+// 3.让构造函数的this指向这个对象，执行构造函数代码，初始化新对象
+// 4.判断函数返回值类型，引用类型直接返回，否则返回新对象
+
+function objectFactory() {
+    let newObj = null,
+    res = null,
+    Constructor = Array.prototype.shift.call(arguments);
+    if (typeof Constructor !== "function") return false;
+    newObj = Object.create(Constructor.prototype);
+    res = Constructor.apply(newObj, arguments);
+    return res&& (typeof res === "object" || typeof res === "function") ? res : newObj;
+}
+
+
+// 函数柯里话（将一个具有多个参数的函数转化为具有单个参数的函数
+// 函数柯里化指的是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
+
+function curry(fn, args) {
+    // 获取函数需要的参数长度
+    let length = fn.length;
+  
+    args = args || [];
+  
+    return function() {
+      let subArgs = args.slice(0);
+  
+      // 拼接得到现有的所有参数
+      for (let i = 0; i < arguments.length; i++) {
+        subArgs.push(arguments[i]);
+      }
+  
+      // 判断参数的长度是否已经满足函数所需参数的长度
+      if (subArgs.length >= length) {
+        // 如果满足，执行函数
+        return fn.apply(this, subArgs);
+      } else {
+        // 如果不满足，递归返回科里化的函数，等待参数的传入
+        return curry.call(this, fn, subArgs);
+      }
+    };
+  }
+
+
+ // 经历了这么多次面试这种定长 curry 问题我好像一次都没遇到过. 反倒是不定长 curry 的考察频频出现:
+ //  如实现这样一个 add: (头条一面, 腾讯一面考了同一题)
+add(1); // 1
+add(1)(2); // 3
+add(1)(2)(3); // 5
