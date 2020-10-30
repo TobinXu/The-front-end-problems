@@ -366,7 +366,7 @@ function objectFactory() {
     if (typeof Constructor !== "function") return false;
     newObj = Object.create(Constructor.prototype);
     res = Constructor.apply(newObj, arguments);
-    return res&& (typeof res === "object" || typeof res === "function") ? res : newObj;
+    return res && (typeof res === "object" || typeof res === "function") ? res : newObj;
 }
 
 
