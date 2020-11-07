@@ -336,6 +336,21 @@ init().then(() => {
     console.log(3000);
 })
 
+// 自己写的睡眠函数
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve,ms)
+    })
+  }
+  async function printNum(n) {
+    for (let i = 0; i < n; i++) {
+      await sleep(2000);
+      console.log(i);
+    }  
+  }
+  printNum(10)
+
+
 // 使用reduce模拟map
 Array.prototype.MyMap = function(fn, callbackThis) {
     // 最终返回的新数组
@@ -401,6 +416,107 @@ function curry(fn, args) {
 
  // 经历了这么多次面试这种定长 curry 问题我好像一次都没遇到过. 反倒是不定长 curry 的考察频频出现:
  //  如实现这样一个 add: (头条一面, 腾讯一面考了同一题)
-add(1); // 1
-add(1)(2); // 3
-add(1)(2)(3); // 5
+var add = function (m) {
+ 
+    var temp = function (n) {
+        return add(m + n);
+    }
+ 
+    temp.toString = function () {
+        return m;
+    }
+ 
+    return temp;
+};
+ 
+ 
+add(3)(4)(5); // 12
+add(3)(6)(9)(25); // 43
+/*
+让我们来解释这个过程：add(3)(4)(5)
+1、先执行add(3)，此时m=3，并且返回temp函数；
+2、执行temp(4)，这个函数内执行add(m+n)，n是此次传进来的数值4，m值还是上一步中的3，所以add(m+n)=add(3+4)=add(7)，此时m=7，并且返回temp函数
+3、执行temp(5)，这个函数内执行add(m+n)，n是此次传进来的数值5，m值还是上一步中的7，所以add(m+n)=add(7+5)=add(12)，此时m=12，并且返回temp函数
+4、关键性一步来了，后面没有传入参数，等于返回的temp函数不被执行而是打印，了解JS的朋友都知道对象的toString是修改对象转换字符串的方法，因此代码中temp函数的toString函数return m值，而m值是最后一步执行函数时的值m=12，所以返回值是12。
+看到这其实就很明白了，代码中temp.toString的重写只是为了函数不执行时能够返回最后运算的结果值
+*/
+
+/*
+组合任意个函数
+参数在函数间就好像通过‘管道’传输一样，最右边的函数接收外界参数，返回结果传给左边的函数，最后输出结果。
+*/
+var compose = function() {
+    let args = Array.prototype.slice.call(...arguments);
+    return function(x) {
+      if (args.length >= 2) {
+          return args.reverse().reduce((pre, cur) => {
+          return pre = cur(pre)
+        }, x)
+      } else {
+        return args[1] && args[1](x);
+      }
+    }
+  }
+  function fn1(arg) {
+    return arg +1; // 14
+    }
+    function fn2(arg) {
+    return arg +2; // 13
+    }
+    function fn3(arg) {
+    return arg +3; // 11
+    }
+    const arr = [fn1, fn2, fn3];
+    
+  console.log(compose(arr)(8));
+
+  // 翻转取第一个值
+  var compose = function() {
+    var args = Array.prototype.slice.call(arguments);
+    
+    return function(x) {
+     if (args.length >= 2) {
+     
+        return args.reverse().reduce((p, c) => {
+          return p = c(p)
+       }, x)
+       
+     } else {
+         return args[1] && args[1](x);
+     }
+    }
+  }
+ 
+  // 利用上面示例 测试一下。
+  var arr = [1, 2, 3],
+  reverse = function(x){ return x.reverse()},
+  getFirst = function(x) {return x[0]},
+  trace = function(x) {  console.log('执行结果：', x); return x}
+  
+  
+  compseFunc = compose(trace, getFirst, trace, reverse);
+  
+compseFunc(arr);   
+// 执行结果： (3) [3, 2, 1]
+// 执行结果： 3
+// 3
+
+// 实现一个打点计时器，要求
+// 1、从 start 到 end（包含 start 和 end），每隔 100 毫秒 console.log 一个数字，每次数字增幅为 1
+// 2、返回的对象中需要包含一个 cancel 方法，用于停止定时操作
+// 3、第一个数需要立即输出
+function count(start, end) {
+    console.log(start++);
+      let timer = setInterval(function() {
+          if (start <= end) {
+              console.log(start++);
+          } else {
+              clearInterval(timer);
+          }
+      })
+      return {
+          cancel: function() {
+              clearInterval(timer);
+          }
+      }
+  }
