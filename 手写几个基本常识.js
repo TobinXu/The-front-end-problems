@@ -25,6 +25,11 @@ xhr.setRequestHeader("Accept", "application/json");
 xhr.send(null);
 */
 
+// 获取[m,n]之间的随机整数
+var num = Math.floor(Math.random() * (m-n +1) + m);
+
+
+
 // promsie封装ajax实现：
 function getJSON(url) {
     // 创建一个promise对象
@@ -314,28 +319,6 @@ function objectFactory() {
 // objectFactory(构造函数, 初始化参数);
 
 
-// 手写sleep函数
-function sleep1(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    })
-}
-sleep1(1000).then(() => {
-    console.log(2000);
-})
-
-function sleep2(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms)
-    })
-}
-async function init() {
-    await sleep2(1000);
-}
-init().then(() => {
-    console.log(3000);
-})
-
 // 自己写的睡眠函数
 function sleep(ms) {
     return new Promise((resolve) => {
@@ -368,21 +351,6 @@ Array.prototype.MyMap = function(fn, callbackThis) {
 
 https://juejin.im/post/6844903733860499463
 
-// new操作符的实现
-// 1.新建一个空对象
-// 2.将他的prototype指向构造函数的原型
-// 3.让构造函数的this指向这个对象，执行构造函数代码，初始化新对象
-// 4.判断函数返回值类型，引用类型直接返回，否则返回新对象
-
-function objectFactory() {
-    let newObj = null,
-    res = null,
-    Constructor = Array.prototype.shift.call(arguments);
-    if (typeof Constructor !== "function") return false;
-    newObj = Object.create(Constructor.prototype);
-    res = Constructor.apply(newObj, arguments);
-    return res && (typeof res === "object" || typeof res === "function") ? res : newObj;
-}
 
 
 // 函数柯里话（将一个具有多个参数的函数转化为具有单个参数的函数
@@ -437,7 +405,8 @@ add(3)(6)(9)(25); // 43
 1、先执行add(3)，此时m=3，并且返回temp函数；
 2、执行temp(4)，这个函数内执行add(m+n)，n是此次传进来的数值4，m值还是上一步中的3，所以add(m+n)=add(3+4)=add(7)，此时m=7，并且返回temp函数
 3、执行temp(5)，这个函数内执行add(m+n)，n是此次传进来的数值5，m值还是上一步中的7，所以add(m+n)=add(7+5)=add(12)，此时m=12，并且返回temp函数
-4、关键性一步来了，后面没有传入参数，等于返回的temp函数不被执行而是打印，了解JS的朋友都知道对象的toString是修改对象转换字符串的方法，因此代码中temp函数的toString函数return m值，而m值是最后一步执行函数时的值m=12，所以返回值是12。
+4、关键性一步来了，后面没有传入参数，等于返回的temp函数不被执行而是打印，了解JS的朋友都知道对象的toString是修改对象转换字符串的方法，
+因此代码中temp函数的toString函数return m值，而m值是最后一步执行函数时的值m=12，所以返回值是12。
 看到这其实就很明白了，代码中temp.toString的重写只是为了函数不执行时能够返回最后运算的结果值
 */
 
