@@ -30,6 +30,7 @@ var num = Math.floor(Math.random() * (m-n +1) + m);
 
 
 
+
 // promsie封装ajax实现：
 function getJSON(url) {
     // 创建一个promise对象
