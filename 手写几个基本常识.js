@@ -490,3 +490,47 @@ function count(start, end) {
           }
       }
   }
+
+
+  
+/*构造函数里面要初始化信息和缓存订阅者、获取信息、设置信息、发布通知、添加订阅者*/
+class Subject {
+  constructor() {
+    this.message = '暂无通知';
+    this.observers = [];
+  }
+  getMessage() {
+    return this.message;
+  }
+  setMessage(message) {
+    this.message = message;
+    this.notifyAllObservers();
+  }
+  notifyAllObservers() {
+    this.observers.forEach(observer => observer.update());
+  }
+  attach(observer) {
+    this.observers.push(observer);
+  }
+}
+
+//绑定更新
+class Observer {
+  constructor(name, subject) {
+    this.name = name;
+    this.subject = subject;
+    this.subject.attach(this);
+  }
+  update() {
+    console.log(`${this.name}收到通知：${this.subject.getMessage()}`);
+  }
+}
+
+let subject = new Subject();
+let a = new Observer('张三', subject);
+let b = new Observer('李四', subject);
+let c = new Observer('王五', subject);
+
+subject.setMessage("明天开学");
+subject.setMessage("今天提前放假");
+subject.setMessage("在家记得踢足球");
